@@ -2,7 +2,7 @@
 
     namespace BrokenTitan\LaunchDarkly\Providers;
 
-    use BrokenTitan\LaunchDarkly\Service\Feature;
+    use BrokenTitan\LaunchDarkly\Facades\Feature;
     use Illuminate\Support\Facades\Blade;
     use Illuminate\Support\ServiceProvider;
     use LaunchDarkly\Integrations\Guzzle;
@@ -17,7 +17,7 @@
             });
 
             Blade::if("feature", function(string $flag) {
-                return Feature::active($flag);
+                return Feature::flag($flag);
             });
         }
     }
