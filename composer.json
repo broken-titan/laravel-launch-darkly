@@ -1,0 +1,31 @@
+{
+    "name": "broken-titan/laravel-launch-darkly",
+    "description": "Adds LaunchDarkly integration to Laravel.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marshall Miller",
+            "email": "contact@brokentitan.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.5",
+        "launchdarkly/launchdarkly-php": ">=3.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "BrokenTitan\\LaunchDarkly\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BrokenTitan\\LaunchDarkly\\Providers\\LaunchDarklyServiceProvider"
+            ],
+            "aliases": {
+                "Feature": "BrokenTitan\\LaunchDarkly\\Facades\\Feature"
+            }
+        }
+    }
+}
