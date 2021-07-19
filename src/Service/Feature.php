@@ -28,7 +28,27 @@
             $this->user = $user;
 		}
 
-		public function flag(string $flag) : bool {
+		public function variation(string $flag) { 
 			return $this->client->variation($flag, $this->user);
+		}
+
+		public function flag(string $flag) : bool {
+			return $this->bool($flag);
+		}
+
+		public function bool(string $flag) : bool {
+			return filter_var($this->variation($flag), FILTER_VALIDATE_BOOLEAN);
+		}
+
+		public function string(string $flag) : string {
+			return (string)$this->variation($flag);
+		}
+
+		public function number(string $flag) : float {
+			return floatval($this->variation($flag));
+		}
+
+		public function json(string $flag) : array {
+			return $this->variation($flag);
 		}
 	}
