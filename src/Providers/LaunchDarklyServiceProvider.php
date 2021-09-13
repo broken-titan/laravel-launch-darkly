@@ -3,17 +3,33 @@
     namespace BrokenTitan\LaunchDarkly\Providers;
 
     use BrokenTitan\LaunchDarkly\Facades\Feature;
-    use Illuminate\Support\Facades\Blade;
-    use Illuminate\Support\ServiceProvider;
+    use BrokenTitan\LaunchDarkly\Service\Feature as FeatureService;
+    use BrokenTitan\LaunchDarkly\Listeners\AuthEventSubscriber;
+    use Illuminate\Support\Facades\{Blade, Event};
+    use Illuminate\Foundation\Support\Providers\EventServiceProvider;
     use LaunchDarkly\Integrations\Guzzle;
     use LaunchDarkly\LDClient;
 
-    class LaunchDarklyServiceProvider extends ServiceProvider {
+    class LaunchDarklyServiceProvider extends EventServiceProvider {
+        protected $subscribe = [
+            AuthEventSubscriber::class
+        ];
+
+        public function boot() {
+            foreach ($this->subscribe as $subscriber) {
+                Event::subscribe($subscriber);
+            }
+        }
+
         public function register() {
             $this->mergeConfigFrom(config_path("services.php"), "launchDarkly");
 
-            $this->app->singleton(LDClient::class, function() {
+            $this->app->bind(LDClient::class, function() {
                 return new LDClient(config("services.launchDarkly.key"), ["event_publisher" => Guzzle::eventPublisher()]);
+            });
+
+            $this->app->bind(FeatureService::class, function($app) {
+                return new FeatureService($app->make(LDClient::class));
             });
 
             Blade::if("feature", function(string $flag) {
