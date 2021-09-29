@@ -2,6 +2,7 @@
 
 	return [
 		"launchDarkly" => [
-			"key" => env("LAUNCHDARKLY_API_KEY")
+			"key" => env("LAUNCHDARKLY_API_KEY"),
+			"options" => []
 		]
 	];
