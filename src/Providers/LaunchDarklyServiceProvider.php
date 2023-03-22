@@ -26,7 +26,7 @@
 
             $this->app->bind(LDClient::class, function() {
                 $options = array_merge(["event_publisher" => Guzzle::eventPublisher()], config("services.launchDarkly.options") ?? []);
-                return new LDClient(config("services.launchDarkly.key"), $options);
+                return new LDClient(config("services.launchDarkly.key") ?? "", $options);
             });
 
             $this->app->bind(FeatureService::class, function($app) {
