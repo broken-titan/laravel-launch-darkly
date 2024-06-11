@@ -55,6 +55,6 @@
 		}
 
 		public function json(string $flag) : array {
-			return $this->variation($flag);
+			return (array)$this->variation($flag);
 		}
 	}
